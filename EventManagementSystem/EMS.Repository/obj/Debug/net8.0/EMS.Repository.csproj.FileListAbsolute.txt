@@ -1,0 +1,16 @@
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.csproj.AssemblyReference.cache
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.AssemblyInfoInputs.cache
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.AssemblyInfo.cs
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.csproj.CoreCompileInputs.cache
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.sourcelink.json
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\bin\Debug\net8.0\EMS.Repository.deps.json
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\bin\Debug\net8.0\EMS.Repository.dll
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\bin\Debug\net8.0\EMS.Repository.pdb
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\bin\Debug\net8.0\EMS.Domain.dll
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\bin\Debug\net8.0\EMS.Domain.pdb
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repo.D05F0163.Up2Date
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.dll
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\refint\EMS.Repository.dll
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\EMS.Repository.pdb
+D:\FINKI\IS-EventsApp\EventManagementSystem\EMS.Repository\obj\Debug\net8.0\ref\EMS.Repository.dll
