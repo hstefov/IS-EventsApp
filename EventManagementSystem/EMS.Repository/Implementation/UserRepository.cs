@@ -1,4 +1,4 @@
-﻿using EMS.Domain.Models;
+﻿using EMS.Domain.Identity;
 using EMS.Repository.Data;
 using EMS.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +29,9 @@ namespace EMS.Repository.Implementation
         public Attendee Get(string id)
         {
             return entities
-               .Include(z => z.Tickets)
-               .Include(z => z.EventAttendees)
+               .Include(z => z.ShoppingCart)
+               .Include("z => z.ShoppingCart.TicketsInShoppingCart")
+               .Include("z => z.ShoppingCart.TicketsInShoppingCart.Ticket")
                .SingleOrDefault(s => s.Id == id);
         }
         public void Insert(Attendee entity)

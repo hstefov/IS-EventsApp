@@ -10,8 +10,9 @@ namespace EMS.Domain.Models
 {
     public class Event : BaseEntity
     {
-        public string? Name { get; set; }
-        public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
-        public virtual ICollection<EventAttendee> EventAttendees { get; set; } = new List<EventAttendee>();
+        public string? EventName { get; set; }
+        public string? HostName { get; set; }
+        public string? ImageUrl { get; set; }   
+        public virtual ICollection<ScheduledEvent> Schedules { get; set; } = new List<ScheduledEvent>();
     }
 }

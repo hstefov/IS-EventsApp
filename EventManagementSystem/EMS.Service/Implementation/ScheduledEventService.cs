@@ -9,38 +9,38 @@ using System.Threading.Tasks;
 
 namespace EMS.Service.Implementation
 {
-    public class ScheduleService : IScheduleService
+    public class ScheduledEventService : IScheduledEventService
     {
-        private readonly IRepository<Schedule> _scheduleRepository;
+        private readonly IRepository<ScheduledEvent> _scheduleRepository;
 
-        public ScheduleService(IRepository<Schedule> scheduleRepository)
+        public ScheduledEventService(IRepository<ScheduledEvent> scheduleRepository)
         {
             _scheduleRepository = scheduleRepository;
         }
 
-        public void CreateNewSchedule(Schedule s)
+        public void CreateNewScheduledEvent(ScheduledEvent s)
         {
             _scheduleRepository.Insert(s);
         }
 
-        public void DeleteSchedule(Guid id)
+        public void DeleteScheduledEvent(Guid id)
         {
             var schedule = _scheduleRepository.Get(id);
             _scheduleRepository.Delete(schedule);
         }
 
-        public List<Schedule> GetAllSchedules()
+        public List<ScheduledEvent> GetAllScheduledEvents()
         {
             return _scheduleRepository.GetAll().ToList();
         }
 
-        public Schedule GetDetailsForSchedule(Guid? id)
+        public ScheduledEvent GetDetailsForScheduledEvent(Guid? id)
         {
             var schedule = _scheduleRepository.Get(id);
            return schedule;
         }
 
-        public void UpdateExistingSchedule(Schedule s)
+        public void UpdateExistingScheduledEvent(ScheduledEvent s)
         {
             _scheduleRepository.Update(s);
         }

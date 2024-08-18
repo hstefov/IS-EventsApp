@@ -30,7 +30,10 @@ namespace EMS.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -170,50 +173,42 @@ namespace EMS.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AttendeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AttendeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    AttendeeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_AspNetUsers_AttendeeId1",
-                        column: x => x.AttendeeId1,
+                        name: "FK_Orders_AspNetUsers_AttendeeId",
+                        column: x => x.AttendeeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventAttendees",
+                name: "ShoppingCarts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AttendeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AttendeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserAttendeeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventAttendees", x => x.Id);
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EventAttendees_AspNetUsers_AttendeeId1",
-                        column: x => x.AttendeeId1,
+                        name: "FK_ShoppingCarts_AspNetUsers_UserAttendeeId",
+                        column: x => x.UserAttendeeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EventAttendees_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schedules",
+                name: "ScheduledEvents",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -224,11 +219,88 @@ namespace EMS.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.PrimaryKey("PK_ScheduledEvents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Schedules_Events_EventId",
+                        name: "FK_ScheduledEvents_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    price = table.Column<double>(type: "float", nullable: false),
+                    ScheduledEventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tickets_ScheduledEvents_ScheduledEventId",
+                        column: x => x.ScheduledEventId,
+                        principalTable: "ScheduledEvents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketInOrders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketInOrders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketInOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketInOrders_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketInShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShoppingCartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketInShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketInShoppingCarts_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketInShoppingCarts_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -273,24 +345,51 @@ namespace EMS.Repository.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventAttendees_AttendeeId1",
-                table: "EventAttendees",
-                column: "AttendeeId1");
+                name: "IX_Orders_AttendeeId",
+                table: "Orders",
+                column: "AttendeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventAttendees_EventId",
-                table: "EventAttendees",
+                name: "IX_ScheduledEvents_EventId",
+                table: "ScheduledEvents",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_EventId",
-                table: "Schedules",
-                column: "EventId");
+                name: "IX_ShoppingCarts_UserAttendeeId",
+                table: "ShoppingCarts",
+                column: "UserAttendeeId",
+                unique: true,
+                filter: "[UserAttendeeId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_AttendeeId1",
+                name: "IX_TicketInOrders_OrderId",
+                table: "TicketInOrders",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketInOrders_TicketId",
+                table: "TicketInOrders",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketInShoppingCarts_ShoppingCartId",
+                table: "TicketInShoppingCarts",
+                column: "ShoppingCartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketInShoppingCarts_TicketId",
+                table: "TicketInShoppingCarts",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_OrderId",
                 table: "Tickets",
-                column: "AttendeeId1");
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_ScheduledEventId",
+                table: "Tickets",
+                column: "ScheduledEventId");
         }
 
         /// <inheritdoc />
@@ -312,22 +411,31 @@ namespace EMS.Repository.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EventAttendees");
+                name: "TicketInOrders");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
-
-            migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "TicketInShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "ShoppingCarts");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "ScheduledEvents");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Events");
         }
     }
 }

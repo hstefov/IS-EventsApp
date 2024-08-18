@@ -1,4 +1,4 @@
-using EMS.Domain.Models;
+using EMS.Domain.Identity;
 using EMS.Repository.Data;
 using EMS.Repository.Implementation;
 using EMS.Repository.Interface;
@@ -24,7 +24,7 @@ builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(ITicketRepository), typeof(TicketRepository));
 
 builder.Services.AddTransient<IEventService, EventService>();
-builder.Services.AddTransient<IScheduleService, ScheduleService>();
+builder.Services.AddTransient<IScheduledEventService, ScheduledEventService>();
 builder.Services.AddTransient<ITicketService, TicketService>();
 
 

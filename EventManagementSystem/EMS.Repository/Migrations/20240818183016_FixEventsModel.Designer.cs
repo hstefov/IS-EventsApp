@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240812174654_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240818183016_FixEventsModel")]
+    partial class FixEventsModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,16 @@ namespace EMS.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EMS.Domain.Models.Attendee", b =>
+            modelBuilder.Entity("EMS.Domain.Identity.Attendee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -44,14 +47,17 @@ namespace EMS.Repository.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -60,6 +66,9 @@ namespace EMS.Repository.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -99,7 +108,13 @@ namespace EMS.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("EventName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HostName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -107,31 +122,23 @@ namespace EMS.Repository.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("EMS.Domain.Models.EventAttendee", b =>
+            modelBuilder.Entity("EMS.Domain.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AttendeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AttendeeId1")
+                    b.Property<string>("UserAttendeeId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttendeeId1");
+                    b.HasIndex("UserAttendeeId");
 
-                    b.HasIndex("EventId");
-
-                    b.ToTable("EventAttendees");
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("EMS.Domain.Models.Schedule", b =>
+            modelBuilder.Entity("EMS.Domain.Models.ScheduledEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +160,25 @@ namespace EMS.Repository.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("ScheduledEvents");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.ShoppingCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserAttendeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAttendeeId")
+                        .IsUnique()
+                        .HasFilter("[UserAttendeeId] IS NOT NULL");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("EMS.Domain.Models.Ticket", b =>
@@ -162,17 +187,70 @@ namespace EMS.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AttendeeId")
+                    b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AttendeeId1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ScheduledEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttendeeId1");
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ScheduledEventId");
 
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.TicketInOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketInOrders");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.TicketInShoppingCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ShoppingCartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketInShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -312,24 +390,16 @@ namespace EMS.Repository.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EMS.Domain.Models.EventAttendee", b =>
+            modelBuilder.Entity("EMS.Domain.Models.Order", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Attendee", "Attendee")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("AttendeeId1");
+                    b.HasOne("EMS.Domain.Identity.Attendee", "UserAttendee")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserAttendeeId");
 
-                    b.HasOne("EMS.Domain.Models.Event", "Event")
-                        .WithMany("EventAttendees")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attendee");
-
-                    b.Navigation("Event");
+                    b.Navigation("UserAttendee");
                 });
 
-            modelBuilder.Entity("EMS.Domain.Models.Schedule", b =>
+            modelBuilder.Entity("EMS.Domain.Models.ScheduledEvent", b =>
                 {
                     b.HasOne("EMS.Domain.Models.Event", "Event")
                         .WithMany("Schedules")
@@ -340,13 +410,66 @@ namespace EMS.Repository.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("EMS.Domain.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("EMS.Domain.Identity.Attendee", "UserAttendee")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("EMS.Domain.Models.ShoppingCart", "UserAttendeeId");
+
+                    b.Navigation("UserAttendee");
+                });
+
             modelBuilder.Entity("EMS.Domain.Models.Ticket", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Attendee", "Attendee")
+                    b.HasOne("EMS.Domain.Models.Order", null)
                         .WithMany("Tickets")
-                        .HasForeignKey("AttendeeId1");
+                        .HasForeignKey("OrderId");
 
-                    b.Navigation("Attendee");
+                    b.HasOne("EMS.Domain.Models.ScheduledEvent", "ScheduledEvent")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ScheduledEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ScheduledEvent");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.TicketInOrder", b =>
+                {
+                    b.HasOne("EMS.Domain.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMS.Domain.Models.Ticket", "Ticket")
+                        .WithMany("TicketsInOrder")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.TicketInShoppingCart", b =>
+                {
+                    b.HasOne("EMS.Domain.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("TicketsInShoppingCart")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMS.Domain.Models.Ticket", "Ticket")
+                        .WithMany("TicketsInShoppingCart")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingCart");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -360,7 +483,7 @@ namespace EMS.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Attendee", null)
+                    b.HasOne("EMS.Domain.Identity.Attendee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,7 +492,7 @@ namespace EMS.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Attendee", null)
+                    b.HasOne("EMS.Domain.Identity.Attendee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,7 +507,7 @@ namespace EMS.Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EMS.Domain.Models.Attendee", null)
+                    b.HasOne("EMS.Domain.Identity.Attendee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,25 +516,46 @@ namespace EMS.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Attendee", null)
+                    b.HasOne("EMS.Domain.Identity.Attendee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EMS.Domain.Models.Attendee", b =>
+            modelBuilder.Entity("EMS.Domain.Identity.Attendee", b =>
                 {
-                    b.Navigation("EventAttendees");
+                    b.Navigation("Orders");
 
-                    b.Navigation("Tickets");
+                    b.Navigation("ShoppingCart")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EMS.Domain.Models.Event", b =>
                 {
-                    b.Navigation("EventAttendees");
-
                     b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.Order", b =>
+                {
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.ScheduledEvent", b =>
+                {
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.ShoppingCart", b =>
+                {
+                    b.Navigation("TicketsInShoppingCart");
+                });
+
+            modelBuilder.Entity("EMS.Domain.Models.Ticket", b =>
+                {
+                    b.Navigation("TicketsInOrder");
+
+                    b.Navigation("TicketsInShoppingCart");
                 });
 #pragma warning restore 612, 618
         }

@@ -25,15 +25,14 @@ namespace EMS.Repository.Implementation
         public List<Ticket> GetAllTickets()
         {
             return entities
-                    .Include(z => z.Attendee)
-                    .ThenInclude(z => z.EventAttendees)
+                    .Include(z => z.ScheduledEvent)
                     .ToList();
         }
 
         public Ticket GetDetailsForTicket(BaseEntity id)
         {
             return entities
-                .Include(z => z.Attendee)
+                .Include(z => z.ScheduledEvent)
                 .SingleOrDefaultAsync(z => z.Id == id.Id).Result;
         }
     }
