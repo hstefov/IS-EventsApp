@@ -1,5 +1,5 @@
-﻿﻿@using EMS.Domain
-﻿@using Microsoft.Extensions.Options
+﻿@using EMS.Domain
+@using Microsoft.Extensions.Options
 @model EMS.Domain.DTO.ShoppingCartDTO
 
 @{
@@ -8,21 +8,6 @@
 
 <h1>Index</h1>
 
-@* @if (Model.TotalPrice != 0)
-{
-    <form asp-controller="ShoppingCarts" asp-action="PayOrder" method="post">
-        <article>
-            <script src="https://checkout.stripe.com/checkout.js"
-                    class="stripe-button"
-                    data-key="@Stripe.Value.PublishableKey"
-                    data-locale="auto"
-                    data-description="Events Application Payment"
-                    data-amount="@(Model.TotalPrice * 100)"
-                    data-label="Pay $@Model.TotalPrice">
-            </script>
-        </article>
-    </form>
-} *@
 <table class="table">
     <thead>
         <tr>
@@ -50,7 +35,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Ticket.ScheduledEvent.Event.EventName)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.Ticket.Price)
                 </td>
@@ -65,13 +49,15 @@
         }
     </tbody>
     <tfoot>
-    <th><b>Total:</b></th>
-
-    <th></th>
-    <th></th>
-    <th></th>
-
-    <th><b>@Model.TotalPrice</b></th>
-
+        <tr>
+            <th><b>Total:</b></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th><b>@Model.TotalPrice</b></th>
+        </tr>
     </tfoot>
 </table>
+
+<!-- Button to call the order action -->
+<a asp-action="order" class="btn btn-primary">Place Order</a>

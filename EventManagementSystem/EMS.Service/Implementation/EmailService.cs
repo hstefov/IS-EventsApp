@@ -26,11 +26,11 @@ namespace EMS.Service.Implementation
         {
             var emailMessage = new MimeMessage
             {
-                Sender = new MailboxAddress("Events Application", "events@outlook.com"),
+                Sender = new MailboxAddress("Events Application", "events1232024@outlook.com"),
                 Subject = allMails.Subject
             };
 
-            emailMessage.From.Add(new MailboxAddress("Events Application", "events@outlook.com"));
+            emailMessage.From.Add(new MailboxAddress("Events Application", "events1232024@outlook.com"));
 
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Plain) { Text = allMails.Content };
 
