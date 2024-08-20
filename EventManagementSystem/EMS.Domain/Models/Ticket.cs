@@ -9,7 +9,7 @@ namespace EMS.Domain.Models
 {
     public class Ticket : BaseEntity
     {
-        public double price { get; set; }
+        public double Price { get; set; }
         public Guid ScheduledEventId { get; set; }
         public ScheduledEvent? ScheduledEvent { get; set; }
         public virtual ICollection<TicketInShoppingCart>? TicketsInShoppingCart { get; set; }

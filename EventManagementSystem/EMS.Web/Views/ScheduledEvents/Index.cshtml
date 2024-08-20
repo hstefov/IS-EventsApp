@@ -1,0 +1,41 @@
+﻿@model List<EMS.Domain.Models.ScheduledEvent>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container">
+    <div class="m-3">
+        <a class="btn btn-success" asp-controller="ScheduledEvents" asp-action="Create">Schedule new event</a>
+    </div>
+
+    @for(int i=0;i<Model.Count; i++)
+    {
+        var item = Model[i];
+        if(i % 3 == 0)
+        {
+            @:<div class="row">
+        }
+        <div class="col-3 m-4">
+
+            <div class="card" style="width: 18rem; height: 20rem">
+                <img class="card-img-top" src="@item.Event.ImageUrl" alt="Card image cap">
+               <div class="card-body">
+                    <h5 class="card-title">Event name: @item.Event.EventName</h5>
+                    <h5 class="card-title">Host name: @item.Event.HostName</h5>
+                    <h5 class="card-title">Location: @item.Location</h5>
+                    <h5 class="card-title">Date: @item.TimeSlot.ToString("MMMM dd, yyyy")</h5> <!-- Date formatted -->
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="ScheduledEvents" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a>
+                    <a asp-controller="ScheduledEvents" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+
+        if(i % 3 == 2)
+        {
+            @:</div>
+        }
+    }

@@ -10,7 +10,10 @@ namespace EMS.Service.Interface
     public interface ITicketService
     {
         List<Ticket> GetAllTickets();
-        Ticket GetDetailsForTicket(BaseEntity id);
+        Ticket GetDetailsForTicket(Guid? id);
+        void CreateNewTicket(Ticket t);
+        void UpdateExistingTicket(Ticket t);
+        void DeleteTicket(Guid? id);
 
     }
 }

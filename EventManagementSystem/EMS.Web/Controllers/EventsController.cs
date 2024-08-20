@@ -28,13 +28,13 @@ namespace EMS.Web.Controllers
                 return NotFound();
             }
 
-            var product = _eventService.GetDetailsForEvent(id);
-            if (product == null)
+            var eventDetails = _eventService.GetDetailsForEvent(id);
+            if (eventDetails == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(eventDetails);
         }
 
         // GET: Events/Create

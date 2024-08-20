@@ -1,0 +1,41 @@
+﻿@model List<EMS.Domain.Models.Ticket>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container">
+    <div class="m-3">
+        <a class="btn btn-success" asp-controller="Tickets" asp-action="Create">Add new Ticket</a>
+    </div>
+
+    @for(int i=0;i<Model.Count; i++)
+    {
+        var item = Model[i];
+        if(i % 3 == 0)
+        {
+            @:<div class="row">
+        }
+        <div class="col-3 m-4">
+
+            <div class="card" style="width: 18rem; height: 20rem">
+                <img style="max-height:12rem" class="card-img-top" src="@item.ScheduledEvent.Event.ImageUrl" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Event: @item.ScheduledEvent.Event.EventName</h5>
+                    <h5 class="card-title">Host: @item.ScheduledEvent.Event.HostName</h5>
+                    <h5 class="card-title">Price: @item.Price$</h5>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Tickets" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a>
+                    <a asp-controller="Tickets" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-controller="Tickets" asp-action="AddToCart" asp-route-id="@item.Id" class="btn btn-info">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+
+        if(i % 3 == 2)
+        {
+            @:</div>
+        }
+    }

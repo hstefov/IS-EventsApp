@@ -30,8 +30,10 @@ namespace EMS.Repository.Implementation
         {
             return entities
                .Include(z => z.ShoppingCart)
-               .Include("z => z.ShoppingCart.TicketsInShoppingCart")
-               .Include("z => z.ShoppingCart.TicketsInShoppingCart.Ticket")
+               .Include("ShoppingCart.TicketsInShoppingCart")
+               .Include("ShoppingCart.TicketsInShoppingCart.Ticket")
+               .Include("ShoppingCart.TicketsInShoppingCart.Ticket.ScheduledEvent")
+               .Include("ShoppingCart.TicketsInShoppingCart.Ticket.ScheduledEvent.Event")
                .SingleOrDefault(s => s.Id == id);
         }
         public void Insert(Attendee entity)

@@ -1,4 +1,5 @@
 using EMS.Domain.Identity;
+using EMS.Domain.Settings;
 using EMS.Repository.Data;
 using EMS.Repository.Implementation;
 using EMS.Repository.Interface;
@@ -10,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -21,11 +25,15 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
-builder.Services.AddScoped(typeof(ITicketRepository), typeof(TicketRepository));
+builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IScheduledEventService, ScheduledEventService>();
 builder.Services.AddTransient<ITicketService, TicketService>();
+builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();
 
 
 var app = builder.Build();

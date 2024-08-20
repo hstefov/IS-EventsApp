@@ -23,11 +23,38 @@ namespace EMS.Repository.Implementation
         }
         public IEnumerable<T> GetAll()
         {
+          
+            if (typeof(T) == typeof(ScheduledEvent))
+            {
+                var scheduledEvents = entities as DbSet<ScheduledEvent>;
+                return scheduledEvents?.Include(e => e.Event).ToList() as IEnumerable<T>;
+            }
+
+            if (typeof(T) == typeof(Ticket))
+            {
+                var tickets = entities as DbSet<Ticket>;
+                return tickets?
+                    .Include(t => t.ScheduledEvent)
+                        .ThenInclude(se => se.Event)
+                    .ToList() as IEnumerable<T>;
+            }
+
             return entities.AsEnumerable();
         }
 
+
         public T Get(Guid? id)
         {
+            if (typeof(T) == typeof(ScheduledEvent))
+            {
+                return entities.Include("Event").SingleOrDefault(s => s.Id == id) as T;
+            }
+
+            if (typeof(T) == typeof(Ticket))
+            {
+                return entities.Include("ScheduledEvent").Include("ScheduledEvent.Event").SingleOrDefault(s => s.Id == id) as T;
+            }
+
             return entities.SingleOrDefault(s => s.Id == id);
         }
         public void Insert(T entity)
@@ -44,7 +71,17 @@ namespace EMS.Repository.Implementation
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (entity is ScheduledEvent scheduledEvent)
+            {
+                // Ensure related Event entity is tracked
+                var existingEvent = context.Events.Find(scheduledEvent.EventId);
+                if (existingEvent == null)
+                {
+                    throw new InvalidOperationException("The related Event does not exist.");
+                }
             }
             entities.Update(entity);
             context.SaveChanges();

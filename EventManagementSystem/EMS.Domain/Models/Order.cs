@@ -11,7 +11,7 @@ namespace EMS.Domain.Models
     {
         public string? UserAttendeeId { get; set; }
         public Attendee? UserAttendee { get; set; }
-        public virtual ICollection<Ticket>? Tickets { get; set; }
+        public virtual ICollection<TicketInOrder>? TicketsInOrder { get; set; }
         
     }
 }

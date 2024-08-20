@@ -1,4 +1,5 @@
 ﻿using EMS.Domain.Identity;
+using EMS.Domain.MailMessage;
 using EMS.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace EMS.Repository.Data
         public virtual DbSet<TicketInShoppingCart> TicketInShoppingCarts { get; set; }
         public virtual DbSet<TicketInOrder> TicketInOrders { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<EmailMessage> EmailMessages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

@@ -11,21 +11,37 @@ namespace EMS.Service.Implementation
 {
     public class TicketService : ITicketService
     {
-        private readonly ITicketRepository _ticketRepository;
+        private readonly IRepository<Ticket> _ticketRepository;
 
-        public TicketService(ITicketRepository ticketRepository)
+        public TicketService(IRepository<Ticket> ticketRepository)
         {
             _ticketRepository = ticketRepository;
         }
 
-        public List<Ticket> GetAllTickets()
+        public void CreateNewTicket(Ticket t)
         {
-            return _ticketRepository.GetAllTickets();
+            _ticketRepository.Insert(t);
         }
 
-        public Ticket GetDetailsForTicket(BaseEntity id)
+        public void DeleteTicket(Guid? id)
         {
-           return _ticketRepository.GetDetailsForTicket(id);
+           Ticket t = _ticketRepository.Get(id);
+            _ticketRepository.Delete(t);
+        }
+
+        public List<Ticket> GetAllTickets()
+        {
+           return _ticketRepository.GetAll().ToList();  
+        }
+
+        public Ticket GetDetailsForTicket(Guid? id)
+        {
+            return _ticketRepository.Get(id);
+        }
+
+        public void UpdateExistingTicket(Ticket t)
+        {
+           _ticketRepository.Update(t);
         }
     }
 }

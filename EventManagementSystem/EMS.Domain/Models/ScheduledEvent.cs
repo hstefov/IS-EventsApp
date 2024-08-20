@@ -15,6 +15,8 @@ namespace EMS.Domain.Models
         public Guid EventId { get; set; }
         public Event? Event { get; set; }
         public virtual ICollection<Ticket>? Tickets { get; set; }
+        // Computed property
+        public string EventDisplayName => Event != null ? $"{Event.EventName} ({Event.HostName})" : string.Empty;
     }
 }
 

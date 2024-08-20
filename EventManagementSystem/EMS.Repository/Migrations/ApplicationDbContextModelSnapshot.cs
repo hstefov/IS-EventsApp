@@ -99,6 +99,29 @@ namespace EMS.Repository.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("EMS.Domain.MailMessage.EmailMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MailTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailMessages");
+                });
+
             modelBuilder.Entity("EMS.Domain.Models.Event", b =>
                 {
                     b.Property<Guid>("Id")
@@ -184,18 +207,13 @@ namespace EMS.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("ScheduledEventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("price")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ScheduledEventId");
 
@@ -418,10 +436,6 @@ namespace EMS.Repository.Migrations
 
             modelBuilder.Entity("EMS.Domain.Models.Ticket", b =>
                 {
-                    b.HasOne("EMS.Domain.Models.Order", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("EMS.Domain.Models.ScheduledEvent", "ScheduledEvent")
                         .WithMany("Tickets")
                         .HasForeignKey("ScheduledEventId")
@@ -434,7 +448,7 @@ namespace EMS.Repository.Migrations
             modelBuilder.Entity("EMS.Domain.Models.TicketInOrder", b =>
                 {
                     b.HasOne("EMS.Domain.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("TicketsInOrder")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -535,7 +549,7 @@ namespace EMS.Repository.Migrations
 
             modelBuilder.Entity("EMS.Domain.Models.Order", b =>
                 {
-                    b.Navigation("Tickets");
+                    b.Navigation("TicketsInOrder");
                 });
 
             modelBuilder.Entity("EMS.Domain.Models.ScheduledEvent", b =>
