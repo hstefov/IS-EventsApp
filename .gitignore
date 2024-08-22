@@ -8,5 +8,5 @@
 *.sln.docstates
 
 #Manually added by Jane to ignore auto-generated files inside /bin and /obj
-/bin
-/obj
+/bin/
+/obj/
