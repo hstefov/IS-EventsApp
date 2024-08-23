@@ -7,6 +7,12 @@
 *.userosscache
 *.sln.docstates
 
-#Manually added by Jane to ignore auto-generated files inside /bin and /obj
-/bin/
-/obj/
+# Ignore auto-generated files inside /bin and /obj
+**/bin/
+**/obj/
+
+# Ignore ASP.NET Core build directories
+**/bin/Debug/
+**/obj/Debug/
+**/bin/Release/
+**/obj/Release/
