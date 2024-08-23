@@ -6,3 +6,13 @@
 *.suo
 *.userosscache
 *.sln.docstates
+
+# Ignore auto-generated files inside /bin and /obj
+**/bin/
+**/obj/
+
+# Ignore ASP.NET Core build directories
+**/bin/Debug/
+**/obj/Debug/
+**/bin/Release/
+**/obj/Release/
