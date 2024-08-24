@@ -28,6 +28,7 @@ namespace EMS.Repository.Implementation
                 .Include(z => z.UserAttendee)
                 .Include("TicketsInOrder.Ticket")
                 .Include("TicketsInOrder.Ticket.ScheduledEvent")
+                .Include("TicketsInOrder.Ticket.ScheduledEvent.Event")
                 .ToList();
         }
 
@@ -38,6 +39,7 @@ namespace EMS.Repository.Implementation
                 .Include(z => z.UserAttendee)
                 .Include("TicketsInOrder.Ticket")
                 .Include("TicketsInOrder.Ticket.ScheduledEvent")
+                .Include("TicketsInOrder.Ticket.ScheduledEvent.Event")
                 .SingleOrDefaultAsync(z => z.Id == id.Id).Result;
         }
     }

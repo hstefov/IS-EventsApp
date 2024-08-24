@@ -2,9 +2,9 @@
 
 
 <div class="container">
-@*     <div class="row">
+    <div class="row">
         <a asp-controller="Order" asp-action="ExportAllOrders" class="btn btn-info">Export Orders</a>
-    </div> *@
+    </div>
 
     <div class="row m-5">
         <table class="table">
@@ -40,10 +40,10 @@
                             |
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">View Order</a>
                         </td>
-                        @* <td>
+                        <td>
                             |
                             <a asp-action="CreateInvoice" asp-route-id="@item.Id" class="btn btn-info">Create Invoice</a>
-                        </td> *@
+                        </td>
                     </tr>
                 }
             </tbody>
