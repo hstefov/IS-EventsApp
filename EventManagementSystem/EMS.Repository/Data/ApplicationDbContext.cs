@@ -19,6 +19,7 @@ namespace EMS.Repository.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
     }
 }
