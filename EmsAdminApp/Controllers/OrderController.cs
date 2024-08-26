@@ -17,7 +17,7 @@ namespace EmsAdminApp.Controllers
         public IActionResult Index()
         {
             HttpClient client = new HttpClient();
-            string URL = "http://localhost:5088/api/admin/GetAllOrders";
+            string URL = "https://emsweb20240826182329.azurewebsites.net/api/admin/GetAllOrders";
 
             HttpResponseMessage response = client.GetAsync(URL).Result;
             var data = response.Content.ReadAsAsync<List<Order>>().Result;
@@ -28,7 +28,7 @@ namespace EmsAdminApp.Controllers
         {
             HttpClient client = new HttpClient();
 
-            string URL = "http://localhost:5088/api/Admin/GetDetails";
+            string URL = "https://emsweb20240826182329.azurewebsites.net/api/Admin/GetDetails";
             var model = new
             {
                 Id = id
@@ -48,7 +48,7 @@ namespace EmsAdminApp.Controllers
         {
             HttpClient client = new HttpClient();
 
-            string URL = "http://localhost:5088/api/Admin/GetDetails";
+            string URL = "https://emsweb20240826182329.azurewebsites.net/api/Admin/GetDetails";
             var model = new
             {
                 Id = id
@@ -95,7 +95,7 @@ namespace EmsAdminApp.Controllers
                 worksheet.Cell(1, 2).Value = "Customer Email";
                 worksheet.Cell(1, 3).Value = "Total Price";
                 HttpClient client = new HttpClient();
-                string URL = "http://localhost:5088/api/Admin/GetAllOrders";
+                string URL = "https://emsweb20240826182329.azurewebsites.net/api/Admin/GetAllOrders";
 
                 HttpResponseMessage response = client.GetAsync(URL).Result;
                 var data = response.Content.ReadAsAsync<List<Order>>().Result;

@@ -25,7 +25,7 @@ namespace EmsAdminApp.Controllers
 
             List<Attendee> attendees = getAllAttendeesFromFile(file.FileName);
             HttpClient client = new HttpClient();
-            string URL = "http://localhost:5088/api/admin/ImportAllAttendees";
+            string URL = "https://emsweb20240826182329.azurewebsites.net/api/admin/ImportAllAttendees";
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(attendees), Encoding.UTF8, "application/json");
 
