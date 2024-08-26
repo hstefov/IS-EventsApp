@@ -5,20 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Ticket to Shopping Cart</h1>
+<p class="fs-1">Add Ticket to Shopping Cart</p>
 
-<div class="row">
-    <div class="col-4">
+<div class="row mt-5">
+    <div class="col-3">
 
         <form asp-action="AddToCartConfirmed">
             <input type="hidden" asp-for="TicketId" />
 
             <div class="form-group">
-                <label asp-for="Quantity"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <label asp-for="Quantity" class="fs-5"></label>
+                <input asp-for="Quantity" class="form-control my-3" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Add To Cart" class="btn-info" />
+                <input type="submit" value="Add To Cart" class="btn-success rounded-3" />
             </div>
         </form>
     </div>

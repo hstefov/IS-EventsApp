@@ -6,9 +6,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<p class="fs-1">My shopping cart</p>
 
-<table class="table">
+<table class="table my-5">
     <thead>
         <tr>
             <th>
@@ -43,15 +43,15 @@
                 </td>
                 <td>
                     |
-                    <a asp-action="DeleteFromShoppingCart" asp-controller="ShoppingCarts" asp-route-id="@item.Ticket.Id">Delete</a>
+                    <a asp-action="DeleteFromShoppingCart" asp-controller="ShoppingCarts" asp-route-id="@item.Ticket.Id" class="text-danger fw-bold text-decoration-none">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            <th><b>Total:</b></th>
             <th></th>
+            <th><b>Total:</b></th>
             <th></th>
             <th></th>
             <th><b>@Model.TotalPrice</b></th>
@@ -60,4 +60,4 @@
 </table>
 
 <!-- Button to call the order action -->
-<a asp-action="order" class="btn btn-primary">Place Order</a>
+<a asp-action="order" class="btn btn-success">Place Order</a>

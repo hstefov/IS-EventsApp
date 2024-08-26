@@ -2,9 +2,14 @@
 
 
 <div class="container">
-    <div class="row">
-        <a asp-controller="Order" asp-action="ExportAllOrders" class="btn btn-info">Export Orders</a>
+
+    <div class="d-flex justify-content-between">
+        <p class="fs-1">All orders</p>
+        <div class="m-3">
+            <a asp-controller="Order" asp-action="ExportAllOrders" class="btn btn-warning">Export Orders</a>
+        </div>
     </div>
+    <hr />
 
     <div class="row m-5">
         <table class="table">
@@ -42,7 +47,7 @@
                         </td>
                         <td>
                             |
-                            <a asp-action="CreateInvoice" asp-route-id="@item.Id" class="btn btn-info">Create Invoice</a>
+                            <a asp-action="CreateInvoice" asp-route-id="@item.Id" class="btn btn-success">Create Invoice</a>
                         </td>
                     </tr>
                 }
