@@ -1,0 +1,58 @@
+﻿@model List<EmsAdminApp.Models.Order>
+
+
+<div class="container">
+
+    <div class="d-flex justify-content-between">
+        <p class="fs-1">All orders</p>
+        <div class="m-3">
+            <a asp-controller="Order" asp-action="ExportAllOrders" class="btn btn-warning">Export Orders</a>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row m-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Customer details
+                    </th>
+                    <th>
+                        Number of products
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var item = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>
+                            @item.UserAttendee.Email
+                        </td>
+                        
+                        <td>
+                            @item.TicketsInOrder.Count()
+                        </td>
+                        <td>
+                            |
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">View Order</a>
+                        </td>
+                        <td>
+                            |
+                            <a asp-action="CreateInvoice" asp-route-id="@item.Id" class="btn btn-success">Create Invoice</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>

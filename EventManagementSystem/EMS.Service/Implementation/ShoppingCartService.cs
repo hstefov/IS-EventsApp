@@ -111,12 +111,12 @@ namespace EMS.Service.Implementation
 
                 var totalPrice = 0.0;
 
-                sb.AppendLine("Your order is completed. The order conatins the following tickets: ");
+                sb.AppendLine("Your order is completed. The order contains the following tickets: ");
                 for (int i = 1; i <= ticketsList.Count(); i++)
                 {
                     var currentItem = ticketsList[i - 1];
                     totalPrice += currentItem.Quantity * currentItem.Ticket.Price;
-                    sb.AppendLine(i.ToString() + ". " + currentItem.Quantity+ " tickets for " + currentItem.Ticket.ScheduledEvent.Event.EventName + "with price of: $" + currentItem.Ticket.Price);
+                    sb.AppendLine(i.ToString() + ". " + currentItem.Quantity+ " tickets for " + currentItem.Ticket.ScheduledEvent.Event.EventName + " with price of: $" + currentItem.Ticket.Price);
                 }
                 sb.AppendLine("Total price for your order: " + totalPrice.ToString());
                 message.Content = sb.ToString();
