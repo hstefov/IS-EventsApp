@@ -31,6 +31,9 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 
 builder.Services.AddTransient<IEventService, EventService>();
+builder.Services.AddTransient<IPartnerEventService, PartnerEventService>();
+builder.Services.AddHttpClient<IPartnerEventService, PartnerEventService>();
+
 builder.Services.AddTransient<IScheduledEventService, ScheduledEventService>();
 builder.Services.AddTransient<ITicketService, TicketService>();
 builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();

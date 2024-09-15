@@ -12,7 +12,8 @@ namespace EMS.Domain.Models
     {
         public string? EventName { get; set; }
         public string? HostName { get; set; }
-        public string? ImageUrl { get; set; }   
+        public string? ImageUrl { get; set; }
+        public bool IsPartnerEvent { get; set; } = false;
         public virtual ICollection<ScheduledEvent> Schedules { get; set; } = new List<ScheduledEvent>();
     }
 }

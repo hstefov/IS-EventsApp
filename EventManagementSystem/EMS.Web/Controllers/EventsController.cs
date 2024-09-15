@@ -17,7 +17,7 @@ namespace EMS.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_eventService.GetAllEvents());
+            return View(_eventService.GetAllEvents().Where(e => !e.IsPartnerEvent).ToList());
         }
 
         // GET: Products/Details/5

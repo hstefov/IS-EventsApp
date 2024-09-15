@@ -100,6 +100,12 @@ namespace EMS.Web.Controllers
                     ScheduledEventId = newTicket.ScheduledEventId,
                     Price = (double)newTicket.Price
                 };
+                ScheduledEvent se = _scheduledEventService.GetDetailsForScheduledEvent(ticketObject.ScheduledEventId);
+                Event e = se.Event;
+                if (e.IsPartnerEvent)
+                {
+                    ticketObject.Price = ticketObject.Price * 0.9;
+                }
                 _ticketService.CreateNewTicket(ticketObject);
                 return RedirectToAction(nameof(Index));
             }

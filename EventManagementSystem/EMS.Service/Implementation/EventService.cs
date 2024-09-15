@@ -34,6 +34,13 @@ namespace EMS.Service.Implementation
             return _eventRepository.GetAll().ToList();
         }
 
+        public List<Guid> GetAllEventsIds()
+        {
+            return _eventRepository.GetAll()
+               .Select(e => e.Id)
+               .ToList();
+        }
+
         public Event GetDetailsForEvent(Guid? id)
         {
             return _eventRepository.Get(id);
